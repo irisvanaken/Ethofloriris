@@ -32,438 +32,438 @@
         }
         .fade-in {
             animation: fadeIn 0.3s ease-in-out;
+    <title>Slimme Examenplanner — iPhone 16</title>
+    <!-- Tailwind CSS voor moderne styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons voor strakke iconen -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Pure iPhone 16 MVP Styling (393px viewport focus) */
+        html, body {
+            font-family: 'Inter', sans-serif;
+            background-color: #E2E8F0;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: none;
+        }
+        /* iPhone 16 App Container */
+        #iphone16-shell {
+            width: 100%;
+            max-width: 393px;
+            min-height: 100dvh;
+            margin: 0 auto;
+            background-color: #F8FAFC;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 40px rgba(15, 23, 42, 0.12);
+        }
+        .fade-in {
+            animation: fadeIn 0.25s ease-out;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        /* Verberg scrollbars voor strakke mobiele UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
-<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="text-slate-800 antialiased">
 
-    <!-- INLOGSCHERM OVERLAY -->
-    <div id="login-screen" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 sm:p-8 border border-slate-100 fade-in my-auto">
-            <!-- Header van inlogscherm -->
-            <div class="flex flex-col items-center text-center mb-6">
-                <div class="bg-blue-600 text-white p-3.5 rounded-2xl shadow-md mb-3">
-                    <i data-lucide="graduation-cap" class="w-8 h-8"></i>
-                </div>
-                <h2 class="text-2xl font-extrabold text-slate-900">Welkom bij StudyFlow</h2>
-                <p class="text-sm text-slate-500 mt-1">Vul je gegevens in om je persoonlijke examenplanner te starten.</p>
-            </div>
+    <!-- IPHONE 16 APP SHELL -->
+    <div id="iphone16-shell">
 
-            <form id="login-form" class="space-y-4">
-                <!-- Naam -->
-                <div>
-                    <label for="login-name" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Jouw Voornaam *</label>
-                    <div class="relative">
-                        <i data-lucide="user" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
-                        <input type="text" id="login-name" required placeholder="Bijv. Lisa of Daan"
-                            class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+        <!-- INLOGSCHERM OVERLAY (iPhone 16) -->
+        <div id="login-screen" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-end justify-center">
+            <div class="bg-white rounded-t-3xl shadow-2xl w-full max-w-[393px] p-6 pb-9 border-t border-slate-100 fade-in max-h-[92dvh] overflow-y-auto no-scrollbar">
+                <!-- iOS Grabber Pill -->
+                <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div>
+
+                <!-- Header van inlogscherm -->
+                <div class="flex flex-col items-center text-center mb-5">
+                    <div class="bg-blue-600 text-white p-3 rounded-2xl shadow-md mb-2.5">
+                        <i data-lucide="graduation-cap" class="w-7 h-7"></i>
                     </div>
+                    <h2 class="text-xl font-extrabold text-slate-900">Welkom bij StudyFlow</h2>
+                    <p class="text-xs text-slate-500 mt-1">Stel je profiel in voor je iPhone examenplanner.</p>
                 </div>
 
-                <!-- E-mailadres / Telefoonnummer -->
-                <div>
-                    <label for="login-contact" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">E-mail of 06-nummer *</label>
-                    <div class="relative">
-                        <i data-lucide="mail" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
-                        <input type="text" id="login-contact" required placeholder="naam@school.nl of 06-12345678"
-                            class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
-                    </div>
-                </div>
-
-                <!-- Leer-berichtjes / Herinneringen -->
-                <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
-                    <label class="flex items-center justify-between cursor-pointer">
-                        <div class="flex items-center gap-2.5">
-                            <i data-lucide="bell-ring" class="w-5 h-5 text-blue-600"></i>
-                            <div>
-                                <p class="text-sm font-bold text-slate-800">Leer-berichtjes ontvangen</p>
-                                <p class="text-[11px] text-slate-500">Krijg een melding wanneer je moet leren</p>
-                            </div>
+                <form id="login-form" class="space-y-3.5">
+                    <!-- Naam -->
+                    <div>
+                        <label for="login-name" class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">Jouw Voornaam *</label>
+                        <div class="relative">
+                            <i data-lucide="user" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
+                            <input type="text" id="login-name" required placeholder="Bijv. Lisa of Daan"
+                                class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
                         </div>
-                        <input type="checkbox" id="login-notifications" checked class="w-4 h-4 accent-blue-600 rounded cursor-pointer">
-                    </label>
-                    
-                    <div id="reminder-time-box" class="pt-2 border-t border-slate-200/80 flex items-center justify-between">
-                        <label for="reminder-time" class="text-xs font-medium text-slate-600">Voorkeurstijd berichtje:</label>
-                        <input type="time" id="reminder-time" value="16:00" class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
-                </div>
 
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 mt-2">
-                    <span>Opslaan & Doorgaan</span>
-                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </button>
-            </form>
-        </div>
-    </div>
+                    <!-- E-mailadres / Telefoonnummer -->
+                    <div>
+                        <label for="login-contact" class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">E-mail of 06-nummer *</label>
+                        <div class="relative">
+                            <i data-lucide="mail" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
+                            <input type="text" id="login-contact" required placeholder="naam@school.nl of 06-12345678"
+                                class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                        </div>
+                    </div>
 
-    <!-- Navigatiebalk -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="bg-blue-600 text-white p-2 rounded-xl shadow-sm">
-                    <i data-lucide="graduation-cap" class="w-6 h-6"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold text-slate-900 tracking-tight">StudyFlow</h1>
-                    <p class="text-xs text-slate-500 hidden sm:block">Automatische Examen- & Leerplanner</p>
-                </div>
+                    <!-- Leer-berichtjes / Herinneringen -->
+                    <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                        <label class="flex items-center justify-between cursor-pointer py-0.5">
+                            <div class="flex items-center gap-2.5">
+                                <i data-lucide="bell-ring" class="w-5 h-5 text-blue-600 flex-shrink-0"></i>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-800">Leer-berichtjes</p>
+                                    <p class="text-[11px] text-slate-500">Melding wanneer je moet leren</p>
+                                </div>
+                            </div>
+                            <input type="checkbox" id="login-notifications" checked class="w-5 h-5 accent-blue-600 rounded cursor-pointer">
+                        </label>
+                        
+                        <div id="reminder-time-box" class="pt-2.5 border-t border-slate-200/80 flex items-center justify-between">
+                            <label for="reminder-time" class="text-xs font-semibold text-slate-600">Voorkeurstijd:</label>
+                            <input type="time" id="reminder-time" value="16:00" class="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 active:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-2xl shadow-md transition flex items-center justify-center gap-2 mt-2 text-base">
+                        <span>Opslaan & Starten</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                </form>
             </div>
-            <div class="flex items-center gap-2 sm:gap-3">
-                <button onclick="clearAllData()" class="text-xs sm:text-sm font-medium text-slate-500 hover:text-rose-600 hover:bg-rose-50 px-2.5 py-2 rounded-xl transition flex items-center gap-1.5" title="Alles wissen">
+        </div>
+
+        <!-- iPhone 16 Top App Bar -->
+        <header class="bg-white/95 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30 px-4 h-14 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="bg-blue-600 text-white p-1.5 rounded-xl shadow-sm">
+                    <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                </div>
+                <h1 class="text-lg font-extrabold text-slate-900 tracking-tight">StudyFlow</h1>
+            </div>
+            <div class="flex items-center gap-1.5">
+                <button onclick="clearAllData()" class="p-2.5 text-slate-500 active:text-rose-600 active:bg-rose-50 rounded-xl transition" title="Alles wissen">
                     <i data-lucide="trash-2" class="w-4 h-4"></i>
-                    <span class="hidden md:inline">Wissen</span>
                 </button>
-                <button onclick="logoutUser()" class="text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-xl transition flex items-center gap-1.5" title="Gegevens aanpassen / Uitloggen">
-                    <i data-lucide="log-out" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline">Uitloggen</span>
+                <button onclick="logoutUser()" class="text-xs font-semibold text-slate-700 bg-slate-100 active:bg-slate-200 px-3 py-2 rounded-xl transition flex items-center gap-1.5">
+                    <i data-lucide="user-cog" class="w-3.5 h-3.5"></i>
+                    <span>Profiel</span>
                 </button>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <!-- Notificatie / Meldingen container -->
-    <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+        <!-- Notificatie / Meldingen container (iPhone Dynamic Island stijl) -->
+        <div id="toast-container" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-full max-w-[361px] pointer-events-none"></div>
 
-    <!-- Zwevende Studie Timer Modal / Balk -->
-    <div id="study-timer-widget" class="hidden fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 bg-slate-900 text-white p-5 rounded-3xl shadow-2xl border border-slate-700 z-40 fade-in">
-        <div class="flex items-start justify-between gap-3 mb-3">
-            <div class="min-w-0">
-                <div class="flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span id="timer-subject-badge" class="text-[11px] font-bold uppercase tracking-wider text-blue-300 truncate">Vaknaam</span>
-                </div>
-                <h4 id="timer-topic-title" class="font-bold text-sm text-white truncate mt-0.5">Onderwerp om te leren</h4>
-            </div>
-            <button onclick="closeStudyTimer()" class="text-slate-400 hover:text-white p-1 rounded-lg transition" title="Timer sluiten">
-                <i data-lucide="x" class="w-4 h-4"></i>
-            </button>
-        </div>
-
-        <!-- Aftelklok Display -->
-        <div class="bg-slate-800/90 rounded-2xl py-4 px-5 text-center border border-slate-700/80 mb-4">
-            <div id="timer-display" class="text-4xl font-black tracking-wider font-mono text-white">50:00</div>
-            <p id="timer-status-text" class="text-xs text-slate-400 mt-1">Klaar om te starten</p>
-        </div>
-
-        <!-- Timer Bedieningsknoppen -->
-        <div class="grid grid-cols-3 gap-2">
-            <button id="timer-toggle-btn" onclick="toggleTimerRunning()" class="col-span-2 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-md">
-                <i data-lucide="play" class="w-4 h-4"></i>
-                <span>Start Timer</span>
-            </button>
-            <button onclick="resetStudyTimer()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 border border-slate-700" title="Reset tijd">
-                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
-                <span>Reset</span>
-            </button>
-        </div>
-        <button id="timer-complete-btn" onclick="completeCurrentTimerTask()" class="w-full mt-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-semibold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5">
-            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
-            <span>Taak afronden & afvinken</span>
-        </button>
-    </div>
-
-    <!-- Hoofdinhoud -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
-        <!-- Slim Leer-Berichtje Banner (verschijnt wanneer je vandaag moet leren) -->
-        <div id="study-reminder-banner" class="hidden mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 sm:p-5 rounded-2xl shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 fade-in">
-            <div class="flex items-start sm:items-center gap-3.5">
-                <div class="bg-white/20 p-2.5 rounded-xl flex-shrink-0">
-                    <i data-lucide="bell-ring" class="w-6 h-6 text-white"></i>
-                </div>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-[10px] font-bold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full">Leer-Berichtje</span>
-                        <span id="reminder-banner-time" class="text-xs text-blue-100 font-medium"></span>
+        <!-- Zwevende Studie Timer Sheet (iPhone 16) -->
+        <div id="study-timer-widget" class="hidden fixed bottom-20 left-1/2 -translate-x-1/2 w-full max-w-[361px] bg-slate-900 text-white p-4 rounded-3xl shadow-2xl border border-slate-700 z-40 fade-in">
+            <div class="flex items-start justify-between gap-2 mb-2.5">
+                <div class="min-w-0">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span id="timer-subject-badge" class="text-[10px] font-bold uppercase tracking-wider text-blue-300 truncate">Vaknaam</span>
                     </div>
-                    <h3 id="reminder-banner-title" class="font-bold text-base sm:text-lg mt-0.5">Tijd om te leren!</h3>
-                    <p id="reminder-banner-text" class="text-xs sm:text-sm text-blue-100 mt-0.5">Je hebt vandaag geplande leertaken klaarstaan.</p>
+                    <h4 id="timer-topic-title" class="font-bold text-xs text-white truncate mt-0.5">Onderwerp om te leren</h4>
                 </div>
-            </div>
-            <div class="flex items-center gap-2 self-end sm:self-center">
-                <button onclick="switchPage('planning')" class="bg-white text-blue-600 hover:bg-blue-50 font-bold text-xs px-4 py-2 rounded-xl shadow-sm transition">
-                    Start met leren
-                </button>
-                <button onclick="document.getElementById('study-reminder-banner').classList.add('hidden')" class="text-white/70 hover:text-white p-1.5 rounded-lg transition" title="Sluiten">
+                <button onclick="closeStudyTimer()" class="text-slate-400 active:text-white p-1.5 rounded-xl">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
-        </div>
 
-        <!-- Tab Navigatie -->
-        <div class="flex border-b border-slate-200 mb-8 overflow-x-auto">
-            <button id="tab-home" onclick="switchPage('home')" class="whitespace-nowrap py-3 px-6 text-sm font-semibold border-b-2 border-blue-600 text-blue-600 transition flex items-center gap-2">
-                <i data-lucide="home" class="w-4 h-4"></i> Dashboard
-            </button>
-            <button id="tab-planning" onclick="switchPage('planning')" class="whitespace-nowrap py-3 px-6 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition flex items-center gap-2">
-                <i data-lucide="calendar-days" class="w-4 h-4"></i> Planning & Voortgang
-            </button>
-            <button id="tab-vakken" onclick="switchPage('vakken')" class="whitespace-nowrap py-3 px-6 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition flex items-center gap-2">
-                <i data-lucide="book-open" class="w-4 h-4"></i> Vakken Beheren
-            </button>
-        </div>
-
-        <!-- PAGINA: HOME (NIEUW) -->
-        <div id="page-home" class="page-section space-y-6 fade-in">
-            <!-- Hero Sectie -->
-            <div class="bg-blue-600 rounded-3xl shadow-sm border border-blue-700 p-8 sm:p-12 text-white flex flex-col items-center justify-center text-center relative overflow-hidden">
-                <!-- Decoratieve achtergrond iconen -->
-                <div class="absolute top-0 left-0 p-12 opacity-10 pointer-events-none transform -translate-x-8 -translate-y-8">
-                    <i data-lucide="sparkles" class="w-48 h-48"></i>
-                </div>
-                <div class="absolute bottom-0 right-0 p-12 opacity-10 pointer-events-none transform translate-x-8 translate-y-8">
-                    <i data-lucide="graduation-cap" class="w-48 h-48"></i>
-                </div>
-                
-                <!-- Gecentreerde Inhoud -->
-                <div class="relative z-10 w-full max-w-2xl">
-                    <h2 class="text-4xl sm:text-5xl font-extrabold mb-4 tracking-tight">
-                        Hi, <span id="user-name" contenteditable="true" class="border-b-4 border-dashed border-blue-400 hover:border-white focus:outline-none focus:border-white transition-colors cursor-text" title="Klik om je naam te wijzigen" onblur="saveName()">Student</span>! 👋
-                    </h2>
-                    <p class="text-blue-100 mb-10 text-base sm:text-lg leading-relaxed">
-                        Wat gaan we vandaag doen? Kies hieronder waar je naartoe wilt om je examens voor te bereiden.
-                    </p>
-                    
-                    <!-- Grote Actieknoppen -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full">
-                        <button onclick="switchPage('vakken')" class="group bg-white hover:bg-blue-50 text-slate-800 p-6 rounded-2xl shadow-lg transition transform hover:-translate-y-1 flex flex-col items-center gap-3 text-center border-2 border-transparent hover:border-blue-200">
-                            <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center group-hover:scale-110 transition">
-                                <i data-lucide="plus" class="w-7 h-7"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-xl text-slate-900">Iets Toevoegen</h3>
-                                <p class="text-sm text-slate-500 mt-1">Voeg een nieuw vak of leerstof toe</p>
-                            </div>
-                        </button>
-                        
-                        <button onclick="switchPage('planning')" class="group bg-blue-700 hover:bg-blue-800 text-white p-6 rounded-2xl shadow-lg transition transform hover:-translate-y-1 flex flex-col items-center gap-3 text-center border-2 border-blue-500 hover:border-blue-400">
-                            <div class="w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center group-hover:scale-110 transition border border-blue-400">
-                                <i data-lucide="calendar" class="w-7 h-7"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-xl">Naar Planning</h3>
-                                <p class="text-sm text-blue-200 mt-1">Bekijk je schema en voortgang</p>
-                            </div>
-                        </button>
-                    </div>
-                </div>
+            <!-- Aftelklok Display -->
+            <div class="bg-slate-800/90 rounded-2xl py-3 px-4 text-center border border-slate-700/80 mb-3">
+                <div id="timer-display" class="text-3xl font-black tracking-wider font-mono text-white">50:00</div>
+                <p id="timer-status-text" class="text-[11px] text-slate-400 mt-0.5">Klaar om te starten</p>
             </div>
 
-            <!-- Overzichtskaarten -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Voortgang -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                    <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                        <i data-lucide="bar-chart-2" class="w-5 h-5 text-blue-600"></i> Jouw Voortgang
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center p-3.5 bg-slate-50 rounded-xl border border-slate-100">
-                            <span class="text-sm font-medium text-slate-600">Geplande vakken</span>
-                            <span id="home-stat-subjects" class="text-lg font-bold text-slate-900">0</span>
+            <!-- Timer Bedieningsknoppen -->
+            <div class="grid grid-cols-3 gap-2">
+                <button id="timer-toggle-btn" onclick="toggleTimerRunning()" class="col-span-2 bg-blue-600 active:bg-blue-500 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5">
+                    <i data-lucide="play" class="w-4 h-4"></i>
+                    <span>Start Timer</span>
+                </button>
+                <button onclick="resetStudyTimer()" class="bg-slate-800 active:bg-slate-700 text-slate-200 font-semibold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 border border-slate-700">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    <span>Reset</span>
+                </button>
+            </div>
+            <button id="timer-complete-btn" onclick="completeCurrentTimerTask()" class="w-full mt-2 bg-emerald-600/20 active:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-semibold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5">
+                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                <span>Taak afronden & afvinken</span>
+            </button>
+        </div>
+
+        <!-- Hoofdinhoud (met ruimte voor onderste tabbalk) -->
+        <main class="flex-grow px-4 pt-4 pb-24">
+            
+            <!-- Slim Leer-Berichtje Banner -->
+            <div id="study-reminder-banner" class="hidden mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 rounded-2xl shadow-md space-y-3 fade-in">
+                <div class="flex items-start justify-between gap-2">
+                    <div class="flex items-start gap-3">
+                        <div class="bg-white/20 p-2 rounded-xl flex-shrink-0 mt-0.5">
+                            <i data-lucide="bell-ring" class="w-5 h-5 text-white"></i>
                         </div>
-                        <div class="flex justify-between items-center p-3.5 bg-slate-50 rounded-xl border border-slate-100">
-                            <span class="text-sm font-medium text-slate-600">Voltooide leertaken</span>
-                            <span id="home-stat-done" class="text-lg font-bold text-slate-900">0 van de 0</span>
+                        <div>
+                            <span id="reminder-banner-time" class="text-[10px] text-blue-100 font-semibold block"></span>
+                            <h3 id="reminder-banner-title" class="font-bold text-sm mt-0.5">Tijd om te leren!</h3>
+                            <p id="reminder-banner-text" class="text-xs text-blue-100 mt-0.5 leading-relaxed">Je hebt vandaag geplande leertaken klaarstaan.</p>
+                        </div>
+                    </div>
+                    <button onclick="document.getElementById('study-reminder-banner').classList.add('hidden')" class="text-white/70 active:text-white p-1">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <button onclick="switchPage('planning')" class="w-full bg-white text-blue-600 active:bg-blue-50 font-bold text-xs py-2.5 rounded-xl shadow-sm transition">
+                    Start met leren
+                </button>
+            </div>
+
+            <!-- PAGINA: HOME (iPhone 16) -->
+            <div id="page-home" class="page-section space-y-4 fade-in">
+                <!-- Hero Sectie -->
+                <div class="bg-blue-600 rounded-3xl shadow-sm border border-blue-700 p-6 text-white text-center relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h2 class="text-3xl font-extrabold mb-2 tracking-tight">
+                            Hi, <span id="user-name" contenteditable="true" class="border-b-2 border-dashed border-blue-300 focus:outline-none cursor-text" onblur="saveName()">Student</span>! 👋
+                        </h2>
+                        <p class="text-blue-100 mb-6 text-xs leading-relaxed">
+                            Wat gaan we vandaag doen? Kies hieronder je actie.
+                        </p>
+                        
+                        <!-- Mobiele Actieknoppen -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="switchPage('vakken')" class="bg-white active:bg-blue-50 text-slate-800 p-4 rounded-2xl shadow-md transition flex flex-col items-center gap-2 text-center">
+                                <div class="w-11 h-11 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
+                                    <i data-lucide="plus" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-sm text-slate-900">Toevoegen</h3>
+                                    <p class="text-[11px] text-slate-500 mt-0.5">Nieuw vak</p>
+                                </div>
+                            </button>
+                            
+                            <button onclick="switchPage('planning')" class="bg-blue-700 active:bg-blue-800 text-white p-4 rounded-2xl shadow-md transition flex flex-col items-center gap-2 text-center border border-blue-500">
+                                <div class="w-11 h-11 bg-blue-600 text-white rounded-full flex items-center justify-center border border-blue-400">
+                                    <i data-lucide="calendar" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-sm">Planning</h3>
+                                    <p class="text-[11px] text-blue-200 mt-0.5">Bekijk schema</p>
+                                </div>
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Eerstvolgende examen -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
-                    <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                        <i data-lucide="bell" class="w-5 h-5 text-rose-500"></i> Eerstvolgende Examen
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                    <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+                        <i data-lucide="bell" class="w-4 h-4 text-rose-500"></i> Eerstvolgende Examen
                     </h3>
-                    <div id="home-next-exam" class="flex-grow flex flex-col items-center justify-center min-h-[100px] text-center">
-                        <!-- Wordt gevuld door JavaScript -->
-                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 w-full text-center">
-                            <p class="text-sm text-slate-500">Nog geen examens gepland.</p>
+                    <div id="home-next-exam" class="text-center">
+                        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100">
+                            <p class="text-xs text-slate-500">Nog geen examens gepland.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Voortgang -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                    <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+                        <i data-lucide="bar-chart-2" class="w-4 h-4 text-blue-600"></i> Jouw Voortgang
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <span class="block text-[11px] font-medium text-slate-500">Vakken</span>
+                            <span id="home-stat-subjects" class="text-lg font-extrabold text-slate-900">0</span>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <span class="block text-[11px] font-medium text-slate-500">Afgerond</span>
+                            <span id="home-stat-done" class="text-lg font-extrabold text-slate-900">0 / 0</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- PAGINA: PLANNING -->
-        <div id="page-planning" class="page-section hidden space-y-6 fade-in">
-            <!-- Statistieken / Samenvatting balk -->
-            <div id="stats-bar" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3.5">
-                    <div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
-                        <i data-lucide="calendar-days" class="w-6 h-6"></i>
+            <!-- PAGINA: PLANNING (iPhone 16) -->
+            <div id="page-planning" class="page-section hidden space-y-4 fade-in">
+                <!-- Compacte 3-koloms mobiele statistieken -->
+                <div id="stats-bar" class="grid grid-cols-3 gap-2.5">
+                    <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm text-center">
+                        <p class="text-[10px] text-slate-500 font-semibold uppercase">Dagen</p>
+                        <p id="stat-days" class="text-lg font-extrabold text-slate-900 mt-0.5">0</p>
                     </div>
-                    <div>
-                        <p class="text-xs text-slate-500 font-medium">Studiedagen</p>
-                        <p id="stat-days" class="text-xl font-bold text-slate-900">0</p>
+                    <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm text-center">
+                        <p class="text-[10px] text-slate-500 font-semibold uppercase">Leertijd</p>
+                        <p id="stat-hours" class="text-lg font-extrabold text-blue-600 mt-0.5">0 u</p>
                     </div>
-                </div>
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3.5">
-                    <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
-                        <i data-lucide="clock" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs text-slate-500 font-medium">Totale Leertijd</p>
-                        <p id="stat-hours" class="text-xl font-bold text-slate-900">0 u</p>
+                    <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm text-center">
+                        <p class="text-[10px] text-slate-500 font-semibold uppercase">Klaar</p>
+                        <p id="stat-progress" class="text-lg font-extrabold text-emerald-600 mt-0.5">0%</p>
                     </div>
                 </div>
-                <div class="col-span-2 sm:col-span-1 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3.5">
-                    <div class="p-3 bg-purple-50 text-purple-600 rounded-xl">
-                        <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+
+                <!-- Planning Container -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4">
+                    <div class="flex items-center justify-between gap-2 pb-3 border-b border-slate-100">
+                        <div>
+                            <h2 class="text-base font-bold text-slate-900 flex items-center gap-1.5">
+                                <i data-lucide="list-todo" class="w-4 h-4 text-blue-600"></i>
+                                <span>Leerplanning</span>
+                            </h2>
+                        </div>
+                        <button onclick="generateSchedule(true)" class="text-xs font-semibold bg-slate-100 active:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl transition flex items-center gap-1">
+                            <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                            <span>Update</span>
+                        </button>
                     </div>
-                    <div>
-                        <p class="text-xs text-slate-500 font-medium">Voortgang</p>
-                        <p id="stat-progress" class="text-xl font-bold text-slate-900">0%</p>
+
+                    <!-- Filter tabs -->
+                    <div class="grid grid-cols-3 gap-1.5 my-3 bg-slate-100 p-1 rounded-xl">
+                        <button onclick="setFilter('all')" id="filter-all" class="filter-btn active py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white transition">Alles</button>
+                        <button onclick="setFilter('todo')" id="filter-todo" class="filter-btn py-1.5 rounded-lg text-xs font-semibold text-slate-600 transition">Te doen</button>
+                        <button onclick="setFilter('done')" id="filter-done" class="filter-btn py-1.5 rounded-lg text-xs font-semibold text-slate-600 transition">Klaar</button>
+                    </div>
+
+                    <!-- Lijst met geplande sessies -->
+                    <div id="schedule-container" class="space-y-4 mt-3">
+                        <!-- Wordt dynamisch gevuld door JavaScript -->
                     </div>
                 </div>
             </div>
 
-            <!-- Hoofdcontainer voor de gegenereerde planning -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
-                            <i data-lucide="list-todo" class="w-5 h-5 text-blue-600"></i>
-                            Jouw Automatische Leerplanning
-                        </h2>
-                        <p class="text-xs text-slate-500 mt-1">Inclusief tijdsduur en wetenschappelijk bewezen leermethodes per sessie.</p>
-                    </div>
-                    <button onclick="generateSchedule(true)" class="self-start sm:self-auto text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl transition flex items-center gap-1.5">
-                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-                        <span>Herberekenen</span>
-                    </button>
-                </div>
-
-                <!-- Filter tabs -->
-                <div class="flex gap-2 my-4 overflow-x-auto pb-1">
-                    <button onclick="setFilter('all')" id="filter-all" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white transition">Alles tonen</button>
-                    <button onclick="setFilter('todo')" id="filter-todo" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Nog te doen</button>
-                    <button onclick="setFilter('done')" id="filter-done" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Afgerond</button>
-                </div>
-
-                <!-- Tijdlijn / Lijst met geplande sessies -->
-                <div id="schedule-container" class="space-y-6 mt-4">
-                    <!-- Wordt dynamisch gevuld door JavaScript -->
-                </div>
-            </div>
-        </div>
-
-        <!-- PAGINA: VAKKEN -->
-        <div id="page-vakken" class="page-section hidden space-y-6 fade-in">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <!-- PAGINA: VAKKEN (iPhone 16) -->
+            <div id="page-vakken" class="page-section hidden space-y-4 fade-in">
                 
                 <!-- Kaart 1: Nieuw vak & stof toevoegen -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-                    <div class="flex items-center gap-2.5 mb-5">
-                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
-                        <h2 class="text-lg font-bold text-slate-900">Vak & Leerstof Toevoegen</h2>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-7 h-7 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">1</div>
+                        <h2 class="text-base font-bold text-slate-900">Vak & Leerstof Toevoegen</h2>
                     </div>
 
-                    <form id="subject-form" class="space-y-4">
-                        <!-- Vaknaam & Kleur -->
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <div class="sm:col-span-2">
-                                <label for="subject-name" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Vaknaam *</label>
-                                <input type="text" id="subject-name" placeholder="bijv. Wiskunde B, Geschiedenis" required
-                                    class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
-                            </div>
+                    <form id="subject-form" class="space-y-3.5">
+                        <!-- Vaknaam -->
+                        <div>
+                            <label for="subject-name" class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">Vaknaam *</label>
+                            <input type="text" id="subject-name" placeholder="bijv. Wiskunde B, Geschiedenis" required
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                        </div>
+
+                        <!-- Kleur & Niveau -->
+                        <div class="grid grid-cols-2 gap-2.5">
                             <div>
-                                <label for="subject-color" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Kleurlabel</label>
+                                <label for="subject-color" class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">Kleur</label>
                                 <select id="subject-color" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
                                     <option value="blue">Blauw</option>
                                     <option value="red">Rood</option>
-                                    <option value="emerald">Smaragd (Groen)</option>
+                                    <option value="emerald">Groen</option>
                                     <option value="rose">Roze</option>
-                                    <option value="amber">Oranje / Geel</option>
+                                    <option value="amber">Oranje</option>
                                     <option value="purple">Paars</option>
                                     <option value="cyan">Lichtblauw</option>
                                 </select>
                             </div>
-                        </div>
-
-                        <!-- Examendatum, Moeilijkheidsgraad & Startdagen -->
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div>
-                                <label for="exam-date" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Examendatum *</label>
-                                <input type="date" id="exam-date" required
-                                    class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
-                            </div>
-                            <div>
-                                <label for="difficulty" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Niveau</label>
-                                <select id="difficulty" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                                <label for="difficulty" class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">Niveau</label>
+                                <select id="difficulty" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
                                     <option value="1">Makkelijk</option>
                                     <option value="2" selected>Gemiddeld</option>
                                     <option value="3">Pittig</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <!-- Examendatum & Startdagen -->
+                        <div class="grid grid-cols-2 gap-2.5">
                             <div>
-                                <label for="days-in-advance" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" title="Hoeveel dagen van tevoren wil je beginnen?">Dagen vooraf *</label>
+                                <label for="exam-date" class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">Examendatum *</label>
+                                <input type="date" id="exam-date" required
+                                    class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                            </div>
+                            <div>
+                                <label for="days-in-advance" class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">Dagen vooraf *</label>
                                 <input type="number" id="days-in-advance" min="1" max="60" value="7" required
-                                    class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                                    class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
                             </div>
                         </div>
 
-                        <!-- Leerstof / Onderwerpen toevoegen (Hoofdstukken & Paragrafen samen) -->
+                        <!-- Leerstof / Onderwerpen toevoegen -->
                         <div>
-                            <label for="topics-input" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
-                                Leerstof (Hoofdstukken & Paragrafen) *
+                            <label for="topics-input" class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">
+                                Leerstof (Paragrafen) *
                             </label>
-                            <p class="text-xs text-slate-500 mb-1.5">Typ je hoofdstukken en paragrafen gewoon onder elkaar of gescheiden met een komma.</p>
-                            <textarea id="topics-input" rows="4" required placeholder="Hoofdstuk 1: Differentiëren&#10;§1.1 Afgeleide functies&#10;§1.2 Kettingregel&#10;Hoofdstuk 2: Integreren (§2.1 t/m §2.3)"
-                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"></textarea>
+                            <p class="text-[11px] text-slate-500 mb-1.5">Typ je paragrafen onder elkaar of met een komma.</p>
+                            <textarea id="topics-input" rows="3" required placeholder="Hoofdstuk 1: Differentiëren&#10;§1.1 Afgeleide functies&#10;§1.2 Kettingregel"
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"></textarea>
                         </div>
 
-                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2">
+                        <button type="submit" class="w-full bg-blue-600 active:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-2xl shadow-sm transition flex items-center justify-center gap-2 text-sm">
                             <i data-lucide="plus-circle" class="w-5 h-5"></i>
-                            <span>Vak toevoegen & Planning updaten</span>
+                            <span>Toevoegen & Plannen</span>
                         </button>
                     </form>
                 </div>
 
                 <!-- Kaart 2: Voorkeuren & Lijst met toegevoegde vakken -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">2</div>
-                            <h2 class="text-lg font-bold text-slate-900">Jouw Vakken & Instellingen</h2>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <div class="w-7 h-7 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">2</div>
+                            <h2 class="text-base font-bold text-slate-900">Jouw Vakken</h2>
                         </div>
-                        <span id="subject-count" class="text-xs font-semibold bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full">0 vakken</span>
+                        <span id="subject-count" class="text-[11px] font-bold bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full">0 vakken</span>
                     </div>
 
                     <!-- Max studietijd per dag instelling -->
-                    <div class="mb-5 p-3.5 bg-slate-50 rounded-xl border border-slate-200/80">
+                    <div class="mb-4 p-3 bg-slate-50 rounded-xl border border-slate-200/80">
                         <div class="flex justify-between items-center mb-1.5">
-                            <label for="max-hours" class="text-xs font-semibold text-slate-700">Maximale studietijd per dag:</label>
-                            <span id="max-hours-display" class="text-sm font-bold text-blue-600">3.0 uur</span>
+                            <label for="max-hours" class="text-xs font-semibold text-slate-700">Max. leertijd per dag:</label>
+                            <span id="max-hours-display" class="text-xs font-extrabold text-blue-600">3.0 uur</span>
                         </div>
                         <input type="range" id="max-hours" min="1" max="8" step="0.5" value="3" 
                             class="w-full accent-blue-600 cursor-pointer" onchange="generateSchedule()">
-                        <div class="flex justify-between text-[10px] text-slate-400 mt-1">
-                            <span>1 uur (rustig)</span>
-                            <span>4 uur (gemiddeld)</span>
-                            <span>8 uur (intensief)</span>
-                        </div>
                     </div>
 
                     <!-- Lijst van vakken -->
-                    <div id="subjects-list" class="space-y-3">
+                    <div id="subjects-list" class="space-y-2.5">
                         <!-- Wordt dynamisch gevuld -->
                     </div>
                 </div>
             </div>
-        </div>
 
-    </main>
+        </main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 mt-12 py-6">
-        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400">
-            StudyFlow Examenplanner • Slim plannen met Spaced Repetition & Active Recall
-        </div>
-    </footer>
+        <!-- iPhone 16 Vaste Onderste Tab Bar -->
+        <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[393px] bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 pt-2 pb-5 z-30 grid grid-cols-3 gap-1">
+            <button id="tab-home" onclick="switchPage('home')" class="flex flex-col items-center justify-center py-1 rounded-xl text-blue-600 font-bold transition">
+                <i data-lucide="home" class="w-5 h-5 mb-0.5"></i>
+                <span class="text-[10px]">Home</span>
+            </button>
+            <button id="tab-planning" onclick="switchPage('planning')" class="flex flex-col items-center justify-center py-1 rounded-xl text-slate-400 font-medium transition">
+                <i data-lucide="calendar-days" class="w-5 h-5 mb-0.5"></i>
+                <span class="text-[10px]">Planning</span>
+            </button>
+            <button id="tab-vakken" onclick="switchPage('vakken')" class="flex flex-col items-center justify-center py-1 rounded-xl text-slate-400 font-medium transition">
+                <i data-lucide="book-open" class="w-5 h-5 mb-0.5"></i>
+                <span class="text-[10px]">Vakken</span>
+            </button>
+        </nav>
+
+    </div>
 
     <!-- JAVASCRIPT LOGICA -->
     <script>
@@ -510,8 +510,7 @@
                 icon: "sparkles"
             }
         };
-
-        // Paginatie logica
+        // Paginatie logica (iPhone 16 Bottom Tab Bar)
         function switchPage(pageId) {
             document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
             
@@ -521,14 +520,15 @@
                 const btn = document.getElementById('tab-' + tab);
                 if (btn) {
                     if (tab === pageId) {
-                        btn.className = "whitespace-nowrap py-3 px-6 text-sm font-semibold border-b-2 border-blue-600 text-blue-600 transition flex items-center gap-2";
+                        btn.className = "flex flex-col items-center justify-center py-1 rounded-xl text-blue-600 font-bold transition";
                     } else {
-                        btn.className = "whitespace-nowrap py-3 px-6 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 transition flex items-center gap-2";
+                        btn.className = "flex flex-col items-center justify-center py-1 rounded-xl text-slate-400 font-medium transition";
                     }
                 }
             });
             
             document.getElementById('page-' + pageId).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             lucide.createIcons();
         }
 
@@ -985,12 +985,12 @@
         function setFilter(filterType) {
             currentFilter = filterType;
             document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('bg-blue-600', 'text-white');
-                btn.classList.add('bg-slate-100', 'text-slate-600');
+                btn.classList.remove('bg-blue-600', 'text-white', 'font-bold');
+                btn.classList.add('text-slate-600', 'font-semibold');
             });
             const activeBtn = document.getElementById(`filter-${filterType}`);
-            activeBtn.classList.remove('bg-slate-100', 'text-slate-600');
-            activeBtn.classList.add('bg-blue-600', 'text-white');
+            activeBtn.classList.remove('text-slate-600', 'font-semibold');
+            activeBtn.classList.add('bg-blue-600', 'text-white', 'font-bold');
             renderSchedule();
         }
 
@@ -999,20 +999,18 @@
 
             if (schedule.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center py-12 px-4">
-                        <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                            <i data-lucide="calendar-plus" class="w-8 h-8"></i>
+                    <div class="text-center py-8 px-3">
+                        <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                            <i data-lucide="calendar-plus" class="w-7 h-7"></i>
                         </div>
-                        <h3 class="text-base font-bold text-slate-900">Je planning staat klaar om gevuld te worden</h3>
-                        <p class="text-sm text-slate-500 max-w-md mx-auto mt-1.5 mb-5">
-                            Ga naar 'Vakken Beheren' en voeg een vak, examendatum en je leerstof toe.
+                        <h3 class="text-sm font-bold text-slate-900">Nog geen planning</h3>
+                        <p class="text-xs text-slate-500 mt-1 mb-4">
+                            Voeg eerst een vak en je paragrafen toe.
                         </p>
-                        <div class="flex flex-wrap items-center justify-center gap-3">
-                            <button onclick="switchPage('vakken')" class="inline-flex items-center gap-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2.5 rounded-xl transition shadow-sm">
-                                <i data-lucide="plus" class="w-4 h-4"></i>
-                                <span>Vak Toevoegen</span>
-                            </button>
-                        </div>
+                        <button onclick="switchPage('vakken')" class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-blue-600 active:bg-blue-700 px-4 py-2.5 rounded-xl transition shadow-sm">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                            <span>Vak Toevoegen</span>
+                        </button>
                     </div>
                 `;
                 lucide.createIcons();
@@ -1023,8 +1021,8 @@
             const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
             const tomorrowStr = formatDateISO(tomorrow);
             
-            // Grid container voor de kalenderweergave
-            let html = '<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 items-start">';
+            // Enkelkoloms mobiele lijst voor iPhone 16
+            let html = '<div class="space-y-4">';
 
             schedule.forEach(day => {
                 const visibleTasks = day.tasks.filter(task => {
@@ -1137,10 +1135,10 @@
                 `;
             });
 
-            html += '</div>'; // Sluit kalender grid af
+            html += '</div>'; // Sluit mobiele lijst af
 
-            if (html === '<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 items-start"></div>') {
-                html = `<div class="text-center py-8 col-span-full"><p class="text-sm text-slate-500">Geen taken gevonden voor dit filter.</p></div>`;
+            if (html === '<div class="space-y-4"></div>') {
+                html = `<div class="text-center py-6"><p class="text-xs text-slate-500">Geen taken gevonden voor dit filter.</p></div>`;
             }
 
             container.innerHTML = html;
