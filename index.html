@@ -114,10 +114,6 @@
                 </div>
             </div>
             <div class="flex items-center gap-2 sm:gap-3">
-                <button onclick="loadDemoData()" class="text-xs sm:text-sm font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-xl transition flex items-center gap-1.5">
-                    <i data-lucide="sparkles" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline">Voorbeeld laden</span>
-                </button>
                 <button onclick="clearAllData()" class="text-xs sm:text-sm font-medium text-slate-500 hover:text-rose-600 hover:bg-rose-50 px-2.5 py-2 rounded-xl transition flex items-center gap-1.5" title="Alles wissen">
                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                     <span class="hidden md:inline">Wissen</span>
@@ -132,6 +128,44 @@
 
     <!-- Notificatie / Meldingen container -->
     <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+    <!-- Zwevende Studie Timer Modal / Balk -->
+    <div id="study-timer-widget" class="hidden fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 bg-slate-900 text-white p-5 rounded-3xl shadow-2xl border border-slate-700 z-40 fade-in">
+        <div class="flex items-start justify-between gap-3 mb-3">
+            <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="timer-subject-badge" class="text-[11px] font-bold uppercase tracking-wider text-blue-300 truncate">Vaknaam</span>
+                </div>
+                <h4 id="timer-topic-title" class="font-bold text-sm text-white truncate mt-0.5">Onderwerp om te leren</h4>
+            </div>
+            <button onclick="closeStudyTimer()" class="text-slate-400 hover:text-white p-1 rounded-lg transition" title="Timer sluiten">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <!-- Aftelklok Display -->
+        <div class="bg-slate-800/90 rounded-2xl py-4 px-5 text-center border border-slate-700/80 mb-4">
+            <div id="timer-display" class="text-4xl font-black tracking-wider font-mono text-white">50:00</div>
+            <p id="timer-status-text" class="text-xs text-slate-400 mt-1">Klaar om te starten</p>
+        </div>
+
+        <!-- Timer Bedieningsknoppen -->
+        <div class="grid grid-cols-3 gap-2">
+            <button id="timer-toggle-btn" onclick="toggleTimerRunning()" class="col-span-2 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-md">
+                <i data-lucide="play" class="w-4 h-4"></i>
+                <span>Start Timer</span>
+            </button>
+            <button onclick="resetStudyTimer()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1 border border-slate-700" title="Reset tijd">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                <span>Reset</span>
+            </button>
+        </div>
+        <button id="timer-complete-btn" onclick="completeCurrentTimerTask()" class="w-full mt-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-semibold py-2 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5">
+            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+            <span>Taak afronden & afvinken</span>
+        </button>
+    </div>
 
     <!-- Hoofdinhoud -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -372,13 +406,13 @@
                             </div>
                         </div>
 
-                        <!-- Leerstof / Onderwerpen toevoegen -->
+                        <!-- Leerstof / Onderwerpen toevoegen (Hoofdstukken & Paragrafen samen) -->
                         <div>
                             <label for="topics-input" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
-                                Te leren stof / Hoofdstukken *
+                                Leerstof (Hoofdstukken & Paragrafen) *
                             </label>
-                            <p class="text-xs text-slate-500 mb-2">Zet elk hoofdstuk of onderwerp op een nieuwe regel (of scheid met een komma).</p>
-                            <textarea id="topics-input" rows="3" required placeholder="Hoofdstuk 1: Differentiëren&#10;Hoofdstuk 2: Integreren&#10;Oude examens oefenen"
+                            <p class="text-xs text-slate-500 mb-1.5">Typ je hoofdstukken en paragrafen gewoon onder elkaar of gescheiden met een komma.</p>
+                            <textarea id="topics-input" rows="4" required placeholder="Hoofdstuk 1: Differentiëren&#10;§1.1 Afgeleide functies&#10;§1.2 Kettingregel&#10;Hoofdstuk 2: Integreren (§2.1 t/m §2.3)"
                                 class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"></textarea>
                         </div>
 
@@ -698,9 +732,15 @@
                 .filter(t => t.length > 0);
 
             if (topics.length === 0) {
-                showToast('Voer minimaal één hoofdstuk of onderwerp in.', 'error');
+                showToast('Voer minimaal één hoofdstuk of paragraaf in.', 'error');
                 return;
             }
+
+            // Filter losse hoofdstuk-kopjes weg als er ook specifieke paragrafen zijn ingevoerd,
+            // zodat je alleen de concrete paragrafen op je planning ziet en niet een heel hoofdstuk op 1 dag.
+            const isChapterHeader = (item) => /^(hoofdstuk|hfdst|h)\s*\d+([:.\-\s]|$)/i.test(item);
+            const hasParagraphs = topics.some(t => !isChapterHeader(t));
+            const filteredTopics = hasParagraphs ? topics.filter(t => !isChapterHeader(t)) : topics;
 
             const newSubject = {
                 id: 'subj_' + Date.now(),
@@ -709,7 +749,7 @@
                 examDate: examDateStr,
                 difficulty,
                 daysInAdvance,
-                topics
+                topics: filteredTopics
             };
 
             subjects.push(newSubject);
@@ -719,7 +759,7 @@
 
             renderSubjects();
             generateSchedule();
-            showToast(`Vak "${name}" toegevoegd en planning bijgewerkt!`, 'success');
+            showToast(`Vak "${name}" toegevoegd met ${filteredTopics.length} paragrafen/onderwerpen!`, 'success');
         });
 
         function removeSubject(id) {
@@ -783,7 +823,7 @@
             lucide.createIcons();
         }
 
-        // KERNALGORITME AANGEPAST VOOR DAYS IN ADVANCE
+        // KERNALGORITME AANGEPAST VOOR DAYS IN ADVANCE (Vult ALLE gekozen dagen)
         function generateSchedule(notify = false) {
             if (subjects.length === 0) {
                 schedule = [];
@@ -815,41 +855,11 @@
                 const availableDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
                 const baseDuration = subj.difficulty === 1 ? 35 : (subj.difficulty === 2 ? 50 : 70);
 
-                subj.topics.forEach((topic, index) => {
-                    allTasks.push({
-                        id: `${subj.id}_learn_${index}`,
-                        subjectId: subj.id,
-                        subjectName: subj.name,
-                        color: subj.color,
-                        examDate: examDate,
-                        startDate: startDate, // Bewaar startDate in de taak
-                        topic: topic,
-                        duration: baseDuration,
-                        method: studyMethods.learn,
-                        priorityScore: 1,
-                        idealDayRatio: (index / (subj.topics.length + 1)) * 0.65 
-                    });
-
-                    if (availableDays >= 3) {
-                        allTasks.push({
-                            id: `${subj.id}_practice_${index}`,
-                            subjectId: subj.id,
-                            subjectName: subj.name,
-                            color: subj.color,
-                            examDate: examDate,
-                            startDate: startDate, // Bewaar startDate in de taak
-                            topic: `${topic} (Oefenen)`,
-                            duration: Math.round(baseDuration * 0.75),
-                            method: index % 2 === 0 ? studyMethods.practice : studyMethods.recall,
-                            priorityScore: 2,
-                            idealDayRatio: 0.5 + ((index / subj.topics.length) * 0.35) 
-                        });
-                    }
-                });
-
+                // De laatste dag vóór het examen is altijd de eindherhaling
                 const reviewDate = new Date(examDate);
                 reviewDate.setDate(reviewDate.getDate() - 1);
-                
+                const reviewDateStr = reviewDate >= today ? formatDateISO(reviewDate) : formatDateISO(today);
+
                 allTasks.push({
                     id: `${subj.id}_final_review`,
                     subjectId: subj.id,
@@ -860,9 +870,70 @@
                     topic: `Totale herhaling: ${subj.name}`,
                     duration: subj.difficulty === 3 ? 60 : 45,
                     method: studyMethods.review,
-                    priorityScore: 3,
-                    forcedDate: reviewDate >= today ? formatDateISO(reviewDate) : formatDateISO(today)
+                    forcedDate: reviewDateStr
                 });
+
+                // Aantal overige dagen vóór de eindherhaling die we actief gaan vullen
+                const studyDaysCount = Math.max(0, availableDays - 1);
+
+                if (studyDaysCount > 0) {
+                    // Bouw eerst een lijst met de basis-leertaken (leren + oefenen van alle onderwerpen)
+                    const sessionPool = [];
+                    subj.topics.forEach((topic, idx) => {
+                        sessionPool.push({
+                            topic: topic,
+                            duration: baseDuration,
+                            method: studyMethods.learn
+                        });
+                    });
+                    subj.topics.forEach((topic, idx) => {
+                        sessionPool.push({
+                            topic: `${topic} (Oefenen)`,
+                            duration: Math.round(baseDuration * 0.8),
+                            method: idx % 2 === 0 ? studyMethods.practice : studyMethods.recall
+                        });
+                    });
+
+                    // Zorg dat ELKE dag van de opgegeven periode minstens 1 leersessie krijgt
+                    const totalSessions = Math.max(studyDaysCount, sessionPool.length);
+
+                    for (let i = 0; i < totalSessions; i++) {
+                        // Wijs elke sessie toe aan een specifieke dag (0 t/m studyDaysCount - 1)
+                        const dayOffset = i < studyDaysCount 
+                            ? i 
+                            : Math.floor(((i - studyDaysCount) / Math.max(1, totalSessions - studyDaysCount)) * studyDaysCount);
+
+                        const targetDate = new Date(startDate);
+                        targetDate.setDate(startDate.getDate() + dayOffset);
+
+                        let sessionTemplate;
+                        if (i < sessionPool.length) {
+                            sessionTemplate = sessionPool[i];
+                        } else {
+                            // Extra Spaced Repetition / herhaalsessies als je meer dagen kiest dan er losse hoofdstukken zijn
+                            const topicName = subj.topics[i % subj.topics.length];
+                            const extraMethods = [studyMethods.recall, studyMethods.practice];
+                            sessionTemplate = {
+                                topic: `${topicName} (Extra herhaling)`,
+                                duration: Math.round(baseDuration * 0.7),
+                                method: extraMethods[i % extraMethods.length]
+                            };
+                        }
+
+                        allTasks.push({
+                            id: `${subj.id}_day_${dayOffset}_task_${i}`,
+                            subjectId: subj.id,
+                            subjectName: subj.name,
+                            color: subj.color,
+                            examDate: examDate,
+                            startDate: startDate,
+                            topic: sessionTemplate.topic,
+                            duration: sessionTemplate.duration,
+                            method: sessionTemplate.method,
+                            forcedDate: formatDateISO(targetDate)
+                        });
+                    }
+                }
             });
 
             const dayMap = new Map();
@@ -884,81 +955,10 @@
                 bucket.exams.push(subj);
             });
 
-            const remainingTasks = [];
             allTasks.forEach(task => {
-                if (task.forcedDate) {
-                    const bucket = getDayBucket(task.forcedDate);
-                    bucket.tasks.push(task);
-                    bucket.totalMinutes += task.duration;
-                } else {
-                    remainingTasks.push(task);
-                }
-            });
-
-            remainingTasks.sort((a, b) => {
-                if (a.examDate.getTime() !== b.examDate.getTime()) {
-                    return a.examDate - b.examDate;
-                }
-                return a.idealDayRatio - b.idealDayRatio;
-            });
-
-            // Verdeel overige taken vanaf hun eigen startdatum
-            remainingTasks.forEach(task => {
-                const totalDaysAvailable = Math.max(1, Math.ceil((task.examDate - task.startDate) / (1000 * 60 * 60 * 24)));
-                const targetDayOffset = Math.min(totalDaysAvailable - 1, Math.floor(totalDaysAvailable * task.idealDayRatio));
-                
-                let placed = false;
-
-                // Zoek vanaf de ideale dag VOORUIT
-                for (let offset = targetDayOffset; offset < totalDaysAvailable; offset++) {
-                    const candidateDate = new Date(task.startDate);
-                    candidateDate.setDate(task.startDate.getDate() + offset);
-                    const dateStr = formatDateISO(candidateDate);
-                    const bucket = getDayBucket(dateStr);
-
-                    if (bucket.totalMinutes + task.duration <= maxMinutesPerDay) {
-                        bucket.tasks.push(task);
-                        bucket.totalMinutes += task.duration;
-                        placed = true;
-                        break;
-                    }
-                }
-
-                // Zoek vanaf de ideale dag ACHTERUIT
-                if (!placed) {
-                    for (let offset = targetDayOffset - 1; offset >= 0; offset--) {
-                        const candidateDate = new Date(task.startDate);
-                        candidateDate.setDate(task.startDate.getDate() + offset);
-                        const dateStr = formatDateISO(candidateDate);
-                        const bucket = getDayBucket(dateStr);
-
-                        if (bucket.totalMinutes + task.duration <= maxMinutesPerDay) {
-                            bucket.tasks.push(task);
-                            bucket.totalMinutes += task.duration;
-                            placed = true;
-                            break;
-                        }
-                    }
-                }
-
-                // Minst drukke dag als er nergens onder het maximum plek is
-                if (!placed) {
-                    let leastBusyBucket = null;
-                    for (let offset = 0; offset < totalDaysAvailable; offset++) {
-                        const candidateDate = new Date(task.startDate);
-                        candidateDate.setDate(task.startDate.getDate() + offset);
-                        const dateStr = formatDateISO(candidateDate);
-                        const bucket = getDayBucket(dateStr);
-
-                        if (!leastBusyBucket || bucket.totalMinutes < leastBusyBucket.totalMinutes) {
-                            leastBusyBucket = bucket;
-                        }
-                    }
-                    if (leastBusyBucket) {
-                        leastBusyBucket.tasks.push(task);
-                        leastBusyBucket.totalMinutes += task.duration;
-                    }
-                }
+                const bucket = getDayBucket(task.forcedDate);
+                bucket.tasks.push(task);
+                bucket.totalMinutes += task.duration;
             });
 
             schedule = Array.from(dayMap.values())
@@ -1115,9 +1115,18 @@
                                             <h4 class="font-bold text-xs text-slate-900 leading-tight mb-1.5 ${isDone ? 'line-through text-slate-500' : ''}">
                                                 ${escapeHTML(task.topic)}
                                             </h4>
-                                            <div class="flex items-center gap-1.5 text-[10px] text-slate-500 font-medium">
-                                                <i data-lucide="${task.method.icon}" class="w-3.5 h-3.5 text-slate-400"></i>
-                                                <span class="truncate">${task.method.title}</span>
+                                            <div class="flex items-center justify-between gap-2 mt-2">
+                                                <div class="flex items-center gap-1.5 text-[10px] text-slate-500 font-medium min-w-0">
+                                                    <i data-lucide="${task.method.icon}" class="w-3.5 h-3.5 text-slate-400 flex-shrink-0"></i>
+                                                    <span class="truncate">${task.method.title}</span>
+                                                </div>
+                                                ${!isDone ? `
+                                                    <button type="button" onclick="event.stopPropagation(); openStudyTimer('${task.id}')" 
+                                                        class="text-[10px] font-bold bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white px-2.5 py-1 rounded-lg transition flex items-center gap-1 flex-shrink-0 border border-blue-200/80">
+                                                        <i data-lucide="play" class="w-3 h-3"></i>
+                                                        <span>Timer</span>
+                                                    </button>
+                                                ` : ''}
                                             </div>
                                         </div>
                                     </div>
@@ -1198,21 +1207,6 @@
             }
         }
 
-        function loadDemoData() {
-            const d1 = new Date(); d1.setDate(d1.getDate() + 5);
-            const d2 = new Date(); d2.setDate(d2.getDate() + 8);
-            
-            subjects = [
-                { id: 'demo_1', name: 'Geschiedenis', color: 'blue', examDate: formatDateISO(d1), difficulty: 2, daysInAdvance: 7, topics: ['De Koude Oorlog', 'Jaartallen & Begrippen'] },
-                { id: 'demo_2', name: 'Wiskunde B', color: 'cyan', examDate: formatDateISO(d2), difficulty: 3, daysInAdvance: 10, topics: ['Differentiëren', 'Goniometrie'] }
-            ];
-            completedTasks.clear();
-            renderSubjects();
-            generateSchedule();
-            switchPage('home'); // Na inladen direct terug naar dashboard
-            showToast('Voorbeeld geladen!', 'success');
-        }
-
         function clearAllData() {
             subjects = []; schedule = []; completedTasks.clear();
             renderSubjects(); renderSchedule(); updateStats();
@@ -1237,6 +1231,120 @@
 
         function escapeHTML(str) {
             return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
+        }
+
+        // ==========================================
+        // INTERACTIEVE STUDIE TIMER LOGICA
+        // ==========================================
+        let timerInterval = null;
+        let timerSecondsLeft = 0;
+        let timerInitialSeconds = 0;
+        let timerIsRunning = false;
+        let activeTimerTaskId = null;
+
+        function openStudyTimer(taskId) {
+            // Zoek de betreffende taak in het schema
+            let foundTask = null;
+            for (const day of schedule) {
+                const match = day.tasks.find(t => t.id === taskId);
+                if (match) {
+                    foundTask = match;
+                    break;
+                }
+            }
+            if (!foundTask) return;
+
+            // Stop eventueel lopende timer
+            clearInterval(timerInterval);
+            timerIsRunning = false;
+            activeTimerTaskId = taskId;
+
+            timerInitialSeconds = foundTask.duration * 60;
+            timerSecondsLeft = timerInitialSeconds;
+
+            document.getElementById('timer-subject-badge').textContent = foundTask.subjectName;
+            document.getElementById('timer-topic-title').textContent = `${foundTask.topic} (${foundTask.duration} min)`;
+            document.getElementById('timer-status-text').textContent = 'Klik op Start Timer om te beginnen met leren';
+            
+            updateTimerDisplay();
+            updateTimerButtonUI();
+
+            const widget = document.getElementById('study-timer-widget');
+            widget.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function toggleTimerRunning() {
+            if (timerSecondsLeft <= 0) {
+                timerSecondsLeft = timerInitialSeconds;
+            }
+
+            if (timerIsRunning) {
+                // Pauzeren
+                clearInterval(timerInterval);
+                timerIsRunning = false;
+                document.getElementById('timer-status-text').textContent = 'Timer gepauzeerd';
+            } else {
+                // Starten
+                timerIsRunning = true;
+                document.getElementById('timer-status-text').textContent = 'Bezig met leren... Succes!';
+                timerInterval = setInterval(() => {
+                    if (timerSecondsLeft > 0) {
+                        timerSecondsLeft--;
+                        updateTimerDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        timerIsRunning = false;
+                        document.getElementById('timer-status-text').textContent = 'Tijd is om! Goed gewerkt 🎉';
+                        updateTimerButtonUI();
+                        showToast('Je leersessie is afgelopen! Goed gedaan!', 'success');
+                    }
+                }, 1000);
+            }
+            updateTimerButtonUI();
+        }
+
+        function resetStudyTimer() {
+            clearInterval(timerInterval);
+            timerIsRunning = false;
+            timerSecondsLeft = timerInitialSeconds;
+            document.getElementById('timer-status-text').textContent = 'Timer gereset';
+            updateTimerDisplay();
+            updateTimerButtonUI();
+        }
+
+        function closeStudyTimer() {
+            clearInterval(timerInterval);
+            timerIsRunning = false;
+            activeTimerTaskId = null;
+            document.getElementById('study-timer-widget').classList.add('hidden');
+        }
+
+        function completeCurrentTimerTask() {
+            if (activeTimerTaskId && !completedTasks.has(activeTimerTaskId)) {
+                toggleTask(activeTimerTaskId);
+                showToast('Leertaak afgevinkt! Lekker bezig!', 'success');
+            }
+            closeStudyTimer();
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timerSecondsLeft / 60);
+            const secs = timerSecondsLeft % 60;
+            document.getElementById('timer-display').textContent = 
+                `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function updateTimerButtonUI() {
+            const btn = document.getElementById('timer-toggle-btn');
+            if (timerIsRunning) {
+                btn.className = "col-span-2 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-md";
+                btn.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i><span>Pauzeren</span>`;
+            } else {
+                btn.className = "col-span-2 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-md";
+                btn.innerHTML = `<i data-lucide="play" class="w-4 h-4"></i><span>Start Timer</span>`;
+            }
+            lucide.createIcons();
         }
     </script>
 </body>
